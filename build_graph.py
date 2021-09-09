@@ -91,14 +91,14 @@ def get_pmi_edge(content_lst, window_size=20, threshold=0.):
 
 class BuildGraph:
     def __init__(self, args):
-        clean_corpus_path = f"{args.temp_path}/clean_corpus"
-        self.graph_path = f"{args.temp_path}/graph"
+        clean_corpus_path = f"{args.tmp_path}/clean_corpus"
+        self.graph_path = f"{args.tmp_path}/graph"
         if not os.path.exists(self.graph_path):
             os.makedirs(self.graph_path)
 
-        self.word2id = dict()  # 单词映射
+        self.word2id = dict() 
         self.dataset = args.dataset
-        print(f"\n==> 现在的数据集是:{self.dataset}<==")
+        print(f"\n==> Dataset:{self.dataset}<==")
 
         self.g = nx.Graph()
 
@@ -196,7 +196,7 @@ if __name__ == '__main__':
     # main()
     args = parameter_parser()
     args.dataset = "mr"
-    args.temp_path = '../tmp/TCGCN'
+    args.tmp_path = '../tmp/TCGCN'
 
     G = BuildGraph(args)
 

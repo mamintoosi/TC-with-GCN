@@ -98,7 +98,7 @@ def remove_less_word(lines_str, word_st):
 class CorpusProcess:
     def __init__(self, args, encoding=None):
         corpus_path = args.corpus_path #"data/text_dataset/corpus"
-        clean_corpus_path = f"{args.temp_path}/clean_corpus"
+        clean_corpus_path = f"{args.tmp_path}/clean_corpus"
         if not os.path.exists(clean_corpus_path):
             os.makedirs(clean_corpus_path)
 
@@ -154,7 +154,7 @@ def main():
     args = parameter_parser()
     args.dataset = "mr"
     args.corpus_path = './data/corpus'
-    args.temp_path = '../tmp/TCGCN'
+    args.tmp_path = '../tmp/TCGCN'
 
     CorpusProcess(args)
     # CorpusProcess("R52")

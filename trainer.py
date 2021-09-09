@@ -243,8 +243,8 @@ def main(dataset, times, use_gf=False):
     args.lr = 0.02
 
     args.data_path = './data'
-    args.temp_path = '../tmp/TCGCN'
-    args.graph_path = f"{args.temp_path}/graph"
+    args.tmp_path = '../tmp/TCGCN'
+    args.graph_path = f"{args.tmp_path}/graph"
 
     model = GCN
 

@@ -91,7 +91,7 @@ def read_file(path, mode='r', encoding=None):
 
 def print_graph_detail(graph):
     """
-    格式化显示Graph参数
+    Format and display Graph parameters 
     :param graph:
     :return:
     """
@@ -100,7 +100,7 @@ def print_graph_detail(graph):
            "edges"    : nx.number_of_edges(graph),
            "selfloops": nx.number_of_selfloops(graph),
            "isolates" : nx.number_of_isolates(graph),
-           "覆盖度"      : 1 - nx.number_of_isolates(graph) / nx.number_of_nodes(graph), }
+           "Coverage" : 1 - nx.number_of_isolates(graph) / nx.number_of_nodes(graph), }
     print_table(dst)
 
 
@@ -171,7 +171,7 @@ class EarlyStopping:
         self.early_stop = False
         self.val_loss_min = np.Inf
         self.delta = delta
-        self.model_path = "hdd_data/prepare_dataset/model/model.pt"
+        self.model_path = "../tmp/TCGCN/model/model.pt"
 
     def __call__(self, val_loss, model=None):
 
