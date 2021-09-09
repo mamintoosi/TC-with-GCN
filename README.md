@@ -1,4 +1,4 @@
-# TC-with-GCN
+TC-with-GCN
 ==========
  [![repo size](https://img.shields.io/github/repo-size/mamintoosi/TC-with-GCN.svg)](https://github.com/mamintoosi/TC-with-GCN/archive/master.zip)
  [![GitHub forks](https://img.shields.io/github/forks/mamintoosi/TC-with-GCN)](https://github.com/mamintoosi/TC-with-GCN/network)
