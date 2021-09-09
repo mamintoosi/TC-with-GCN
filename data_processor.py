@@ -5,6 +5,7 @@ from collections import defaultdict
 import numpy as np
 
 from tqdm import tqdm
+from utils import parameter_parser
 
 
 class StringProcess(object):
@@ -95,15 +96,15 @@ def remove_less_word(lines_str, word_st):
 
 
 class CorpusProcess:
-    def __init__(self, dataset, encoding=None):
-        corpus_path = "data/text_dataset/corpus"
-        clean_corpus_path = "data/text_dataset/clean_corpus"
+    def __init__(self, args, encoding=None):
+        corpus_path = args.corpus_path #"data/text_dataset/corpus"
+        clean_corpus_path = f"{args.temp_path}/clean_corpus"
         if not os.path.exists(clean_corpus_path):
             os.makedirs(clean_corpus_path)
 
-        self.dataset = dataset
-        self.corpus_name = f"{corpus_path}/{dataset}.txt"
-        self.save_name = f"{clean_corpus_path}/{dataset}.txt"
+        self.dataset = args.dataset
+        self.corpus_name = f"{corpus_path}/{self.dataset}.txt"
+        self.save_name = f"{clean_corpus_path}/{self.dataset}.txt"
         self.context_dct = defaultdict(dict)
 
         self.encoding = encoding
@@ -150,9 +151,15 @@ class CorpusProcess:
 
 
 def main():
+    args = parameter_parser()
+    args.dataset = "mr"
+    args.corpus_path = './data/corpus'
+    args.temp_path = '../tmp/TCGCN'
+
+    CorpusProcess(args)
     # CorpusProcess("R52")
     # CorpusProcess("20ng")
-    CorpusProcess("mr")
+    # CorpusProcess("mr")
     # CorpusProcess("ohsumed")
     # CorpusProcess("R8")
     # pass

@@ -1,6 +1,7 @@
 import gc
 import warnings
 from time import time
+import os 
 
 import networkx as nx
 import numpy as np
@@ -43,8 +44,12 @@ def get_train_test(target_fn):
 class PrepareData:
     def __init__(self, args):
         print("prepare data")
-        self.graph_path = "data/graph"
+        self.graph_path = args.graph_path
+
         self.args = args
+
+        # os.makedirs(args.data_path) 
+        # os.makedirs(args.graph_path) 
 
         # graph
         graph = nx.read_weighted_edgelist(f"{self.graph_path}/{args.dataset}.txt"
@@ -87,10 +92,11 @@ class PrepareData:
         # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         # target
 
-        target_fn = f"data/text_dataset/{self.args.dataset}.txt"
+        target_fn = f"{self.args.data_path}/{self.args.dataset}.txt"
         target = np.array(pd.read_csv(target_fn,
                                       sep="\t",
-                                      header=None)[2])
+                                      header=None,
+                                      engine='python')[2])
         target2id = {label: indx for indx, label in enumerate(set(target))}
         self.target = [target2id[label] for label in target]
         self.nclass = len(target2id)
@@ -235,6 +241,11 @@ def main(dataset, times, use_gf=False):
     args.val_ratio = 0.1
     args.early_stopping = 10
     args.lr = 0.02
+
+    args.data_path = './data'
+    args.temp_path = '../tmp/TCGCN'
+    args.graph_path = f"{args.temp_path}/graph"
+
     model = GCN
 
     print(args)
@@ -274,8 +285,8 @@ if __name__ == '__main__':
     # for d in ["mr", "ohsumed", "R52", "R8", "20ng"]:
     #     main(d)
     
-    main("mr", 1)
-    # main("mr", 1, use_gf=True)
+    # main("mr", 1)
+    main("mr", 1, use_gf=True)
 
     # main("ohsumed",1)
     # main("R8", 1)

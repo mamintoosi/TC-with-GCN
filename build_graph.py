@@ -14,6 +14,7 @@ from sklearn.pipeline import Pipeline
 from tqdm import tqdm
 
 from utils import print_graph_detail
+from utils import parameter_parser
 
 
 def get_window(content_lst, window_size):
@@ -89,19 +90,19 @@ def get_pmi_edge(content_lst, window_size=20, threshold=0.):
 
 
 class BuildGraph:
-    def __init__(self, dataset):
-        clean_corpus_path = "data/text_dataset/clean_corpus"
-        self.graph_path = "data/graph"
+    def __init__(self, args):
+        clean_corpus_path = f"{args.temp_path}/clean_corpus"
+        self.graph_path = f"{args.temp_path}/graph"
         if not os.path.exists(self.graph_path):
             os.makedirs(self.graph_path)
 
         self.word2id = dict()  # 单词映射
-        self.dataset = dataset
-        print(f"\n==> 现在的数据集是:{dataset}<==")
+        self.dataset = args.dataset
+        print(f"\n==> 现在的数据集是:{self.dataset}<==")
 
         self.g = nx.Graph()
 
-        self.content = f"{clean_corpus_path}/{dataset}.txt"
+        self.content = f"{clean_corpus_path}/{self.dataset}.txt"
 
         self.get_tfidf_edge()
         self.get_pmi_edge()
@@ -178,6 +179,7 @@ class BuildGraph:
         print("total time:", self.pmi_time + self.tfidf_time)
         nx.write_weighted_edgelist(self.g,
                                    f"{self.graph_path}/{self.dataset}.txt")
+                                   #encoding='latin1')
 
         print("\n")
 
@@ -192,5 +194,9 @@ class BuildGraph:
 
 if __name__ == '__main__':
     # main()
-    G = BuildGraph("mr")
+    args = parameter_parser()
+    args.dataset = "mr"
+    args.temp_path = '../tmp/TCGCN'
+
+    G = BuildGraph(args)
 
