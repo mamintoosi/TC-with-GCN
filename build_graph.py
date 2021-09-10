@@ -197,14 +197,15 @@ class BuildGraph:
 if __name__ == '__main__':
     # main()
     args = parameter_parser()
-    args.dataset = "R8" # "mr"
+    # args.dataset = "R8" # "mr"
     args.tmp_path = '../tmp/TCGCN'
     args.graph_path = f"{args.tmp_path}/graph"
-
-    G = BuildGraph(args)
-    g_info = {
-        "num_docs": G.node_num
-        }
-    with open(f"{args.graph_path}/{args.dataset}.pkl", 'wb') as outp:
-        pickle.dump(g_info, outp, pickle.HIGHEST_PROTOCOL)
+    for d in ["mr", "ohsumed", "R52", "R8"]:#, "20ng"]:
+        args.dataset = d # "R8"#"mr"
+        G = BuildGraph(args)
+        g_info = {
+            "num_docs": G.node_num
+            }
+        with open(f"{args.graph_path}/{args.dataset}.pkl", 'wb') as outp:
+            pickle.dump(g_info, outp, pickle.HIGHEST_PROTOCOL)
 

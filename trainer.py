@@ -150,14 +150,14 @@ class TextGCNTrainer:
                                 nhid=self.args.nhid,
                                 nclass=self.nclass,
                                 dropout=self.args.dropout)
-        print(self.model.parameters)
+        # print(self.model.parameters)
         self.model = self.model.to(self.device)
 
         self.optimizer = th.optim.Adam(self.model.parameters(), lr=self.args.lr)
         self.criterion = th.nn.CrossEntropyLoss()
 
         self.model_param = sum(param.numel() for param in self.model.parameters())
-        print('# model parameters:', self.model_param)
+        # print('# model parameters:', self.model_param)
         self.convert_tensor()
 
         start = time()
@@ -276,7 +276,7 @@ def main(dataset, times, use_gf=False):
     record = LogResult()
     seed_lst = list()
     for ind, seed in enumerate(return_seed(times)):
-        print(f"\n\n==> {ind}, seed:{seed}")
+        # print(f"\n\n==> {ind}, seed:{seed}")
         args.seed = seed
         seed_lst.append(seed)
 
@@ -302,13 +302,15 @@ def main(dataset, times, use_gf=False):
 
 if __name__ == '__main__':
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    # for d in ["mr", "ohsumed", "R52", "R8", "20ng"]:
-    #     main(d)
+    for d in ["mr", "ohsumed", "R52", "R8"]:#, "20ng"]:
+        print(d)
+        main(d, 5)
+        main(d, 5, use_gf=True)
     
     # main("mr", 1)
     # main("mr", 1, use_gf=True)
 
     # main("ohsumed",1)
-    main("R8", 5)
+    # main("R8", 5)
     # main("R8", 5, use_gf=True)
     # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

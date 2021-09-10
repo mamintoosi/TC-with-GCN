@@ -152,11 +152,11 @@ class CorpusProcess:
 
 def main():
     args = parameter_parser()
-    args.dataset = "R8"#"mr"
     args.corpus_path = './data/corpus'
     args.tmp_path = '../tmp/TCGCN'
-
-    CorpusProcess(args)
+    for d in ["mr", "ohsumed", "R52", "R8"]:#, "20ng"]:
+        args.dataset = d # "R8"#"mr"
+        CorpusProcess(args)
     # CorpusProcess("R52")
     # CorpusProcess("20ng")
     # CorpusProcess("mr")
