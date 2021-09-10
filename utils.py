@@ -234,8 +234,8 @@ class LogResult:
         # val_list = [x for x in self.result.items()]
         for key, value_lst in self.result.items():
             value_lst = value_lst.tolist()
-            value = np.mean(value_lst)
-            print(key, value, max(value_lst), min(value_lst))
+            # value = np.mean(value_lst)
+            print(key, max(value_lst), min(value_lst))
             # if isinstance(value, int):
             #     string += f"{key}:\n{value}\n{max(value_lst)}\n{min(value_lst)}\n"
             # else:
