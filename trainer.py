@@ -304,8 +304,8 @@ if __name__ == '__main__':
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     for d in ["mr", "ohsumed", "R52", "R8"]:#, "20ng"]:
         print(d)
-        main(d, 5)
-        main(d, 5, use_gf=True)
+        main(d, 2)
+        main(d, 2, use_gf=True)
     
     # main("mr", 1)
     # main("mr", 1, use_gf=True)
