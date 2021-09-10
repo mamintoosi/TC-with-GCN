@@ -229,6 +229,7 @@ class LogResult:
     def show_str(self):
         print()
         string = ""
+        print(type(self.result), self.result)
         print("Results: ",self.result.items())
         for key, value_lst in self.result.items():
             value = np.mean(value_lst)
