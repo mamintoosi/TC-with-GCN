@@ -4,6 +4,8 @@ from time import time
 import os 
 
 import networkx as nx
+import pickle
+from networkx.classes.function import subgraph
 import numpy as np
 import pandas as pd
 import torch as th
@@ -73,11 +75,18 @@ class PrepareData:
 
         # M. Amintoosi
         if self.args.use_gf == True:
-            ec_coef = 50
-            ec = eigenvector_centrality(graph)
+            g_info = pickle.load(open(f"{self.graph_path}/{args.dataset}.pkl", 'rb'))
+            subgraph = graph.subgraph(np.arange(g_info['num_docs']))
+            print('Is subgraph connected: ', nx.is_connected(subgraph))
+            # ظاهرا که زیرگراف همبند نیست
+            ec_coef = 100
+            ec = eigenvector_centrality(subgraph)
             dict1 = OrderedDict(sorted(ec.items()))
             # value = list(dict1.values())
-            value = [1+ec_coef*x for x in dict1.values()]
+            num_words = self.nfeat_dim-g_info['num_docs']
+            one_for_words = [1.] * num_words
+            value = [1+ec_coef*x for x in dict1.values()] + one_for_words
+            print(value[:10])
         else:
             value = [1.] * self.nfeat_dim
 

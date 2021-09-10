@@ -2,6 +2,7 @@ import os
 from collections import Counter
 
 import networkx as nx
+import pickle
 
 import itertools
 import math
@@ -180,6 +181,7 @@ class BuildGraph:
         nx.write_weighted_edgelist(self.g,
                                    f"{self.graph_path}/{self.dataset}.txt")
                                    #encoding='latin1')
+        
 
         print("\n")
 
@@ -197,6 +199,12 @@ if __name__ == '__main__':
     args = parameter_parser()
     args.dataset = "mr"
     args.tmp_path = '../tmp/TCGCN'
+    args.graph_path = f"{args.tmp_path}/graph"
 
     G = BuildGraph(args)
+    g_info = {
+        "num_docs": G.node_num
+        }
+    with open(f"{args.graph_path}/{args.dataset}.pkl", 'wb') as outp:
+        pickle.dump(g_info, outp, pickle.HIGHEST_PROTOCOL)
 
