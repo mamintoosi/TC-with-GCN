@@ -172,7 +172,7 @@ class TextGCNTrainer:
                 string += f"{key}:{value} "
             else:
                 string += f"{key}:{value:.4f} "
-        print(string)
+        # print(string)
 
     def prepare_data(self):
         self.adj = self.predata.adj
@@ -306,8 +306,9 @@ if __name__ == '__main__':
     #     main(d)
     
     # main("mr", 1)
-    main("mr", 1, use_gf=True)
+    # main("mr", 1, use_gf=True)
 
     # main("ohsumed",1)
-    # main("R8", 1)
+    main("R8", 5)
+    # main("R8", 5, use_gf=True)
     # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

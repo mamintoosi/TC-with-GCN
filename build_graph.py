@@ -197,7 +197,7 @@ class BuildGraph:
 if __name__ == '__main__':
     # main()
     args = parameter_parser()
-    args.dataset = "mr"
+    args.dataset = "R8" # "mr"
     args.tmp_path = '../tmp/TCGCN'
     args.graph_path = f"{args.tmp_path}/graph"
 

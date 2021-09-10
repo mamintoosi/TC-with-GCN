@@ -152,7 +152,7 @@ class CorpusProcess:
 
 def main():
     args = parameter_parser()
-    args.dataset = "mr"
+    args.dataset = "R8"#"mr"
     args.corpus_path = './data/corpus'
     args.tmp_path = '../tmp/TCGCN'
 
