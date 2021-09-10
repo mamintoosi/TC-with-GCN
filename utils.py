@@ -227,18 +227,16 @@ class LogResult:
         self.result[key].append(value)
 
     def show_str(self):
-        print()
-        string = ""
-        print(type(self.result), self.result)
-        print("Results: ",self.result.items())
-        # val_list = [x for x in self.result.items()]
-        for key, value_lst in self.result.items():
-            # value_lst = value_lst.tolist()
-            value_lst = value_lst.detach().cpu()
-            # value = np.mean(value_lst)
-            print(key, max(value_lst), min(value_lst))
-            # if isinstance(value, int):
-            #     string += f"{key}:\n{value}\n{max(value_lst)}\n{min(value_lst)}\n"
-            # else:
-            #     string += f"{key}:\n{value:.4f}\n{max(value_lst):.4f}\n{min(value_lst):.4f} \n"
-        print(string)
+        print(self.result["macro_f1"])
+        # print()
+        # string = ""
+        # print(type(self.result), self.result)
+        # print("Results: ",self.result.items())
+        # for key, value_lst in self.result.items():
+        #     value = np.mean(value_lst)
+        #     print(key, max(value_lst), min(value_lst))
+        #     if isinstance(value, int):
+        #         string += f"{key}:\n{value}\n{max(value_lst)}\n{min(value_lst)}\n"
+        #     else:
+        #         string += f"{key}:\n{value:.4f}\n{max(value_lst):.4f}\n{min(value_lst):.4f} \n"
+        # print(string)
