@@ -227,7 +227,7 @@ class LogResult:
         self.result[key].append(value)
 
     def show_str(self):
-        print(self.result["macro_f1"])
+        print('Macro F1:', self.result["macro_f1"])
         # print()
         # string = ""
         # print(type(self.result), self.result)

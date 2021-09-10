@@ -56,7 +56,7 @@ class PrepareData:
         # graph
         graph = nx.read_weighted_edgelist(f"{self.graph_path}/{args.dataset}.txt"
                                           , nodetype=int)
-        print_graph_detail(graph)
+        # print_graph_detail(graph)
         adj = nx.to_scipy_sparse_matrix(graph,
                                         nodelist=list(range(graph.number_of_nodes())),
                                         weight='weight',
@@ -82,7 +82,7 @@ class PrepareData:
             # زیر گراف حاصل از کلمات
             subgraph = graph.subgraph(np.arange(g_info['num_docs'],self.nfeat_dim))
             print('Is subgraph connected: ', nx.is_connected(subgraph))
-            print_graph_detail(subgraph)
+            # print_graph_detail(subgraph)
             ec_coef = 100
             ec = eigenvector_centrality(subgraph)
             dict1 = OrderedDict(sorted(ec.items()))
@@ -172,7 +172,7 @@ class TextGCNTrainer:
                 string += f"{key}:{value} "
             else:
                 string += f"{key}:{value:.4f} "
-        print(string)
+        # print(string)
 
     def prepare_data(self):
         self.adj = self.predata.adj
@@ -295,8 +295,8 @@ def main(dataset, times, use_gf=False):
         if th.cuda.is_available():
             th.cuda.empty_cache()
 
-    print("==> seed set:")
-    print(seed_lst)
+    # print("==> seed set:")
+    # print(seed_lst)
     record.show_str()
 
 
