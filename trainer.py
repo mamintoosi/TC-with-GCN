@@ -97,7 +97,7 @@ class PrepareData:
             num_docs = g_info['num_docs']
             one_for_docs = [1.] * num_docs
             value = one_for_docs + [1*ec_coef*x for x in dict1.values()]
-            print(value[-10:])
+            print("EC: ", value[-10:])
         else:
             value = [1.] * self.nfeat_dim
 
@@ -172,7 +172,7 @@ class TextGCNTrainer:
                 string += f"{key}:{value} "
             else:
                 string += f"{key}:{value:.4f} "
-        # print(string)
+        print(string)
 
     def prepare_data(self):
         self.adj = self.predata.adj
