@@ -76,17 +76,28 @@ class PrepareData:
         # M. Amintoosi
         if self.args.use_gf == True:
             g_info = pickle.load(open(f"{self.graph_path}/{args.dataset}.pkl", 'rb'))
-            subgraph = graph.subgraph(np.arange(g_info['num_docs']))
+            #  زیرگراف حاصل از اسناد همبند نیست
+            # subgraph = graph.subgraph(np.arange(g_info['num_docs']))
+
+            # زیر گراف حاصل از کلمات
+            subgraph = graph.subgraph(np.arange(g_info['num_docs'],self.nfeat_dim))
             print('Is subgraph connected: ', nx.is_connected(subgraph))
-            # ظاهرا که زیرگراف همبند نیست
+            print_graph_detail(subgraph)
             ec_coef = 100
             ec = eigenvector_centrality(subgraph)
             dict1 = OrderedDict(sorted(ec.items()))
             # value = list(dict1.values())
-            num_words = self.nfeat_dim-g_info['num_docs']
-            one_for_words = [1.] * num_words
-            value = [1+ec_coef*x for x in dict1.values()] + one_for_words
-            print(value[:10])
+
+            # برای زیرگراف حاصل از اسناد
+            # num_words = self.nfeat_dim-g_info['num_docs']
+            # one_for_words = [1.] * num_words
+            # value = [1+ec_coef*x for x in dict1.values()] + one_for_words
+
+            # برای زیرگراف حاصل از کلمات
+            num_docs = g_info['num_docs']
+            one_for_docs = [1.] * num_docs
+            value = one_for_docs + [1*ec_coef*x for x in dict1.values()]
+            print(value[-10:])
         else:
             value = [1.] * self.nfeat_dim
 
