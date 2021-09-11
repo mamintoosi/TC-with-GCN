@@ -207,9 +207,10 @@ if __name__ == '__main__':
         G = BuildGraph(args)
 
             # زیر گراف حاصل از کلمات
-        subgraph = G.g.subgraph(np.arange(G.node_num,G.word_num))
+        subgraph = G.g.subgraph(np.arange(G.node_num,G.node_num+G.word_num))
         # print('Is subgraph connected: ', nx.is_connected(subgraph))
         # print_graph_detail(subgraph)
+        print('Computing betweenness centrality...')
         bc_subg = cugraph.betweenness_centrality(subgraph)
         # bc_subg = 0
         # dict1 = OrderedDict(sorted(bc.items()))
@@ -219,6 +220,10 @@ if __name__ == '__main__':
             "bc_subg": bc_subg
             }
 
-        with open(f"{args.graph_path}/{args.dataset}_g_info.pkl", 'wb') as outp:
+        file_name = f"{args.graph_path}/{args.dataset}_g_info.pkl"
+        with open(file_name, 'wb') as outp:
             pickle.dump(g_info, outp, pickle.HIGHEST_PROTOCOL)
+
+        from IPython.display import FileLink
+        FileLink(file_name)            
 
