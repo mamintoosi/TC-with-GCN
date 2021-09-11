@@ -308,7 +308,7 @@ def main(dataset, times, use_gf=False):
 
 if __name__ == '__main__':
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    for d in ["mr", "ohsumed"]:#, "R52", "R8"]:#, "20ng"]:
+    for d in ["mr", "ohsumed", "R52", "R8"]:#, "20ng"]:
         print("\n", d)
         main(d, 2)
         main(d, 2, use_gf=True)
