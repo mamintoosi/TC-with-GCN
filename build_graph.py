@@ -202,7 +202,7 @@ if __name__ == '__main__':
     # args.dataset = "R8" # "mr"
     args.tmp_path = '../tmp/TCGCN'
     args.graph_path = f"{args.tmp_path}/graph"
-    for d in ["mr", "ohsumed", "R52", "R8"]:#, "20ng"]:
+    for d in ["mr", "ohsumed", "R52", "R8", "20ng"]:
         args.dataset = d # "R8"#"mr"
         G = BuildGraph(args)
 
