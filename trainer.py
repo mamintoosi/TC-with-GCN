@@ -96,8 +96,11 @@ class PrepareData:
             # برای زیرگراف حاصل از کلمات
             num_docs = g_info['num_docs']
             one_for_docs = [1.] * num_docs
-            value = one_for_docs + [1*ec_coef*x for x in dict1.values()]
+            value = one_for_docs + [1+ec_coef*x for x in dict1.values()]
             print("EC: ", value[-10:])
+            # with open(f"{args.graph_path}/{args.dataset}_bc.pkl", 'wb') as outp:
+            #     pickle.dump(bc, outp, pickle.HIGHEST_PROTOCOL)
+
         else:
             value = [1.] * self.nfeat_dim
 
@@ -302,8 +305,8 @@ def main(dataset, times, use_gf=False):
 
 if __name__ == '__main__':
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    for d in ["mr", "ohsumed", "R52", "R8"]:#, "20ng"]:
-        print(d)
+    for d in ["mr", "ohsumed"]:#, "R52", "R8"]:#, "20ng"]:
+        print("\n", d)
         main(d, 2)
         main(d, 2, use_gf=True)
     

@@ -2,8 +2,9 @@ import os
 from collections import Counter
 
 import networkx as nx
+import cugraph
 import pickle
-
+import numpy as np
 import itertools
 import math
 from collections import defaultdict
@@ -165,6 +166,7 @@ class BuildGraph:
         print("tfidf_vec type:", type(tfidf_vec))
 
         self.node_num = tfidf_vec.shape[0]
+        self.word_num = tfidf_vec.shape[1]
 
         # 映射单词
         vocab_lst = text_tfidf["vect"].get_feature_names()
@@ -203,9 +205,20 @@ if __name__ == '__main__':
     for d in ["mr", "ohsumed", "R52", "R8"]:#, "20ng"]:
         args.dataset = d # "R8"#"mr"
         G = BuildGraph(args)
+
+            # زیر گراف حاصل از کلمات
+        subgraph = G.g.subgraph(np.arange(G.node_num,G.word_num))
+        # print('Is subgraph connected: ', nx.is_connected(subgraph))
+        # print_graph_detail(subgraph)
+        bc_subg = cugraph.betweenness_centrality(subgraph)
+        # bc_subg = 0
+        # dict1 = OrderedDict(sorted(bc.items()))
         g_info = {
-            "num_docs": G.node_num
+            "num_docs": G.node_num,
+            "num_words": G.word_num,
+            "bc_subg": bc_subg
             }
-        with open(f"{args.graph_path}/{args.dataset}.pkl", 'wb') as outp:
+
+        with open(f"{args.graph_path}/{args.dataset}_g_info.pkl", 'wb') as outp:
             pickle.dump(g_info, outp, pickle.HIGHEST_PROTOCOL)
 
