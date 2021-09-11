@@ -154,7 +154,7 @@ def main():
     args = parameter_parser()
     args.corpus_path = './data/corpus'
     args.tmp_path = '../tmp/TCGCN'
-    for d in ["mr", "ohsumed", "R52", "R8"]:#, "20ng"]:
+    for d in ["mr", "ohsumed", "R52", "R8", "20ng"]:
         print(d)
         args.dataset = d # "R8"#"mr"
         CorpusProcess(args)
