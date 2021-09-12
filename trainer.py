@@ -113,9 +113,9 @@ class PrepareData:
 
             # برای زیرگراف حاصل از کلمات
             num_docs = g_info['num_docs']
-            one_for_docs = [0.] * num_docs
+            one_for_docs = [1.] * num_docs
             # value = one_for_docs + [ec_coef*x for x in dict1.values()]
-            value = one_for_docs + [ec_coef*x for x in dic_vals_orig_order]
+            value = one_for_docs + [1+ec_coef*x for x in dic_vals_orig_order]
             print("EC: ", min(value), max(value), value[:5], value[-5:])
             # with open(f"{args.graph_path}/{args.dataset}_bc.pkl", 'wb') as outp:
             #     pickle.dump(bc, outp, pickle.HIGHEST_PROTOCOL)
