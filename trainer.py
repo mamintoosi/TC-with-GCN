@@ -66,7 +66,7 @@ class PrepareData:
         adj = adj + adj.T.multiply(adj.T > adj) - adj.multiply(adj.T > adj)
 
         # M. Amintoosi
-        if self.args.use_gf == True:
+        if self.args.use_gf is not None:
             g_info = pickle.load(open(f"{self.graph_path}/{args.dataset}_g_info.pkl", 'rb'))
             #  زیرگراف حاصل از اسناد همبند نیست
             # subgraph = graph.subgraph(np.arange(g_info['num_docs']))
@@ -76,25 +76,27 @@ class PrepareData:
             # subgraph = graph.subgraph(np.arange(g_info['num_docs'],self.nfeat_dim))
             # print('Is subgraph connected: ', nx.is_connected(subgraph))
             # # print_graph_detail(subgraph)
-            ec_coef = 100
-            ec = eigenvector_centrality(subgraph)
-            dict1 = OrderedDict(sorted(ec.items()))
+            if self.args.use_gf == "ec":
+                ec_coef = 100
+                ec = eigenvector_centrality(subgraph)
+                dict1 = OrderedDict(sorted(ec.items()))
             # # value = list(dict1.values())
-
-            # bc = g_info["bc_subg"]
-            # dict1 = OrderedDict(sorted(bc.items()))
+            elif self.args.use_gf == "bc":
+                ec_coef = 10000
+                bc = g_info["bc_subg"]
+                dict1 = OrderedDict(sorted(bc.items()))
 
 #در بت‌وین‌نس برخی کلیدها مقدار نداشتند که فعلا به جاشون صفر میزارم
-            a = list(dict1.keys())
-            w = 0
-            for i,x in enumerate(a):
-                if (i>0):
-                    if((x-w)>1):
-                        # حلقه زیر برای بیش از یک مقدار مفقوده پشت سر هم هست
-                        for j in range(x-w):
-                            dict1[w+1+j] = 0
-                        # print(i,x)
-                w = x
+                a = list(dict1.keys())
+                w = 0
+                for i,x in enumerate(a):
+                    if (i>0):
+                        if((x-w)>1):
+                            # حلقه زیر برای بیش از یک مقدار مفقوده پشت سر هم هست
+                            for j in range(x-w):
+                                dict1[w+1+j] = 0
+                            # print(i,x)
+                    w = x
             # صفرها به انتها اضافه شدند،‌به ناچار دوباره مرتب سازی شد
             # dict1 = OrderedDict(sorted(dict1.items()))   
             # نیازی به مرتب سازی نیست
@@ -111,7 +113,7 @@ class PrepareData:
 
             # برای زیرگراف حاصل از کلمات
             num_docs = g_info['num_docs']
-            one_for_docs = [1.] * num_docs
+            one_for_docs = [0.] * num_docs
             # value = one_for_docs + [ec_coef*x for x in dict1.values()]
             value = one_for_docs + [ec_coef*x for x in dic_vals_orig_order]
             print("EC: ", min(value), max(value), value[:5], value[-5:])
@@ -279,7 +281,7 @@ class TextGCNTrainer:
         return test_desc
 
 
-def main(dataset, times, use_gf=False):
+def main(dataset, times, use_gf=None):
     args = parameter_parser()
     args.dataset = dataset
     args.use_gf = use_gf
@@ -334,8 +336,9 @@ if __name__ == '__main__':
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     for d in ["mr", "ohsumed", "R52", "R8"]:#, "20ng"]:
         print("\n", d)
-        main(d, 5)
-        main(d, 5, use_gf=True)
+        main(d, 3)
+        main(d, 3, use_gf='ec')
+        main(d, 3, use_gf='bc')
     
     # main("mr", 1)
     # main("mr", 1, use_gf=True)
