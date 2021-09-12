@@ -2,7 +2,7 @@ import os
 from collections import Counter
 
 import networkx as nx
-import cugraph
+# import cugraph
 import pickle
 import numpy as np
 import itertools
@@ -108,7 +108,7 @@ class BuildGraph:
 
         self.get_tfidf_edge()
         self.get_pmi_edge()
-        self.save()
+        # self.save()
 
     def get_pmi_edge(self):
         pmi_edge_lst, self.pmi_time = get_pmi_edge(self.content, window_size=20, threshold=0.0)
@@ -211,9 +211,9 @@ if __name__ == '__main__':
         # print('Is subgraph connected: ', nx.is_connected(subgraph))
         # print_graph_detail(subgraph)
 
-        print('Computing betweenness centrality...')
-        bc_subg = cugraph.betweenness_centrality(subgraph)
-        # bc_subg = 0
+        # print('Computing betweenness centrality...')
+        # bc_subg = cugraph.betweenness_centrality(subgraph)
+        bc_subg = 0
 
         # dict1 = OrderedDict(sorted(bc.items()))
         g_info = {
@@ -222,9 +222,9 @@ if __name__ == '__main__':
             "bc_subg": bc_subg
             }
 
-        file_name = f"{args.graph_path}/{args.dataset}_g_info.pkl"
-        with open(file_name, 'wb') as outp:
-            pickle.dump(g_info, outp, pickle.HIGHEST_PROTOCOL)
+        # file_name = f"{args.graph_path}/{args.dataset}_g_info.pkl"
+        # with open(file_name, 'wb') as outp:
+        #     pickle.dump(g_info, outp, pickle.HIGHEST_PROTOCOL)
 
         # from IPython.display import FileLink
         # FileLink(file_name)            

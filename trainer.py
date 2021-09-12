@@ -12,6 +12,7 @@ import torch as th
 from sklearn.model_selection import train_test_split
 from collections import OrderedDict
 from networkx.algorithms.centrality import eigenvector_centrality
+from scipy.sparse import spdiags
 
 from layer import GCN
 from utils import accuracy
@@ -64,15 +65,6 @@ class PrepareData:
 
         adj = adj + adj.T.multiply(adj.T > adj) - adj.multiply(adj.T > adj)
 
-        self.adj = preprocess_adj(adj, is_sparse=True)
-
-        # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-        # features
-        self.nfeat_dim = graph.number_of_nodes()
-        row = list(range(self.nfeat_dim))
-        col = list(range(self.nfeat_dim))
-
         # M. Amintoosi
         if self.args.use_gf == True:
             g_info = pickle.load(open(f"{self.graph_path}/{args.dataset}_g_info.pkl", 'rb'))
@@ -80,16 +72,37 @@ class PrepareData:
             # subgraph = graph.subgraph(np.arange(g_info['num_docs']))
 
             # # زیر گراف حاصل از کلمات
+            subgraph = graph.subgraph(np.arange(g_info['num_docs'],g_info['num_docs']+g_info['num_words']))
             # subgraph = graph.subgraph(np.arange(g_info['num_docs'],self.nfeat_dim))
             # print('Is subgraph connected: ', nx.is_connected(subgraph))
             # # print_graph_detail(subgraph)
             ec_coef = 100
-            # ec = eigenvector_centrality(subgraph)
-            # dict1 = OrderedDict(sorted(ec.items()))
+            ec = eigenvector_centrality(subgraph)
+            dict1 = OrderedDict(sorted(ec.items()))
             # # value = list(dict1.values())
 
-            bc = g_info["bc_subg"]
-            dict1 = OrderedDict(sorted(bc.items()))
+            # bc = g_info["bc_subg"]
+            # dict1 = OrderedDict(sorted(bc.items()))
+
+#در بت‌وین‌نس برخی کلیدها مقدار نداشتند که فعلا به جاشون صفر میزارم
+            a = list(dict1.keys())
+            w = 0
+            for i,x in enumerate(a):
+                if (i>0):
+                    if((x-w)>1):
+                        # حلقه زیر برای بیش از یک مقدار مفقوده پشت سر هم هست
+                        for j in range(x-w):
+                            dict1[w+1+j] = 0
+                        # print(i,x)
+                w = x
+            # صفرها به انتها اضافه شدند،‌به ناچار دوباره مرتب سازی شد
+            # dict1 = OrderedDict(sorted(dict1.items()))   
+            # نیازی به مرتب سازی نیست
+            # dic_vals = [x for x in dict1.values()]
+            subg_nodes = list(subgraph.nodes())
+            dic_vals_orig_order = [dict1[x] for x in subg_nodes]
+            # dic_vals_orig_order
+
 
             # برای زیرگراف حاصل از اسناد
             # num_words = self.nfeat_dim-g_info['num_docs']
@@ -99,13 +112,24 @@ class PrepareData:
             # برای زیرگراف حاصل از کلمات
             num_docs = g_info['num_docs']
             one_for_docs = [1.] * num_docs
-            value = one_for_docs + [1+ec_coef*x for x in dict1.values()]
-            print("EC: ", value[-10:])
+            # value = one_for_docs + [ec_coef*x for x in dict1.values()]
+            value = one_for_docs + [ec_coef*x for x in dic_vals_orig_order]
+            print("EC: ", min(value), max(value), value[:5], value[-5:])
             # with open(f"{args.graph_path}/{args.dataset}_bc.pkl", 'wb') as outp:
             #     pickle.dump(bc, outp, pickle.HIGHEST_PROTOCOL)
+            gf = spdiags(value, 0, graph.number_of_nodes(), graph.number_of_nodes())
+            adj = adj + gf
+        # print(shape(adj), shape())
+        self.adj = preprocess_adj(adj, is_sparse=True)
 
-        else:
-            value = [1.] * self.nfeat_dim
+        # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+        # features
+        self.nfeat_dim = graph.number_of_nodes()
+        row = list(range(self.nfeat_dim))
+        col = list(range(self.nfeat_dim))
+
+        value = [1.] * self.nfeat_dim
 
         shape = (self.nfeat_dim, self.nfeat_dim)
         indices = th.from_numpy(
@@ -308,7 +332,7 @@ def main(dataset, times, use_gf=False):
 
 if __name__ == '__main__':
     # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    for d in ["mr", "ohsumed", "R52", "R8"]:#, "20ng"]:
+    for d in ["mr", "ohsumed"]:#, "R52", "R8"]:#, "20ng"]:
         print("\n", d)
         main(d, 5)
         main(d, 5, use_gf=True)
